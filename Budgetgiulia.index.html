@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>💸 Budget · Giulia</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Nunito+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #FDF8F0;
+  --white: #FFFFFF;
+  --pink: #F5A8C0;
+  --pink-light: #FDE8F0;
+  --pink-dark: #E8769E;
+  --yellow: #F7E077;
+  --yellow-light: #FEF8D8;
+  --green: #A8D5B5;
+  --green-light: #E4F5EA;
+  --green-dark: #5BAF7A;
+  --lilac: #C4B5E8;
+  --lilac-light: #EDE8F8;
+  --blue: #9CC8E8;
+  --blue-light: #E3F2FB;
+  --peach: #F5C4A0;
+  --peach-light: #FEF0E4;
+  --ink: #1A1A2E;
+  --ink2: #6B6B8A;
+  --ink3: #A0A0BC;
+  --border: #EDE8E0;
+  --necessita: #A8D5B5;
+  --entertainment: #F5A8C0;
+  --personali: #C4B5E8;
+  --trasporti: #9CC8E8;
+  --abbonamenti: #F7E077;
+  --regali: #F5C4A0;
+  --altro: #D4D4E8;
+  --animali: #B8D4B0;
+  --nav-h: 72px;
+}
+
+- { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+html, body {
+height: 100%;
+font-family: ‘Nunito Sans’, sans-serif;
+background: var(–cream);
+color: var(–ink);
+font-size: 14px;
+overflow-x: hidden;
+}
+
+/* SCROLL CONTAINER */
+.app {
+min-height: 100vh;
+padding-bottom: calc(var(–nav-h) + 16px);
+}
+
+/* HEADER */
+.header {
+background: var(–white);
+padding: 52px 20px 16px;
+border-bottom: 1.5px solid var(–border);
+position: sticky; top: 0; z-index: 50;
+}
+.header-row {
+display: flex; justify-content: space-between; align-items: center;
+}
+.header-logo { display: flex; align-items: center; gap: 10px; }
+.logo-blob {
+width: 38px; height: 38px;
+background: var(–pink);
+border-radius: 12px 12px 12px 4px;
+display: flex; align-items: center; justify-content: center;
+font-size: 20px;
+}
+.header-title h1 {
+font-family: ‘Nunito’, sans-serif;
+font-size: 18px; font-weight: 900; line-height: 1;
+}
+.header-title p { font-size: 11px; color: var(–ink3); font-weight: 600; margin-top: 1px; }
+.header-date {
+background: var(–cream); border-radius: 16px;
+padding: 6px 12px; font-size: 11px; font-weight: 700;
+color: var(–ink2); border: 1.5px solid var(–border);
+}
+
+/* MONTH SCROLLER */
+.month-scroller {
+display: flex; gap: 8px;
+overflow-x: auto; padding: 12px 20px 4px;
+-webkit-overflow-scrolling: touch;
+scrollbar-width: none;
+}
+.month-scroller::-webkit-scrollbar { display: none; }
+.mbtn {
+flex-shrink: 0;
+padding: 7px 16px; border-radius: 20px;
+border: 1.5px solid var(–border); background: var(–white);
+font-family: ‘Nunito’, sans-serif; font-size: 13px; font-weight: 700;
+color: var(–ink2); cursor: pointer; transition: all 0.15s;
+white-space: nowrap;
+}
+.mbtn.active { background: var(–yellow); color: var(–ink); border-color: var(–yellow); }
+
+/* VIEWS */
+.view { display: none; padding: 16px 20px; }
+.view.active { display: block; }
+
+/* KPI CARDS */
+.kpi-grid {
+display: grid; grid-template-columns: 1fr 1fr;
+gap: 10px; margin-bottom: 16px;
+}
+.kpi {
+border-radius: 18px; padding: 16px;
+border: 1.5px solid var(–border);
+background: var(–white);
+}
+.kpi-emoji { font-size: 24px; margin-bottom: 6px; display: block; }
+.kpi-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; color: var(–ink3); margin-bottom: 4px; }
+.kpi-value { font-family: ‘Nunito’, sans-serif; font-size: 20px; font-weight: 900; line-height: 1; }
+.kpi-value.pos { color: var(–green-dark); }
+.kpi-value.neg { color: var(–pink-dark); }
+.kpi-sub { font-size: 10px; color: var(–ink3); margin-top: 4px; font-weight: 600; }
+.kpi-full { grid-column: 1 / -1; }
+
+/* SECTION TITLE */
+.section-title {
+font-family: ‘Nunito’, sans-serif;
+font-size: 16px; font-weight: 900;
+margin-bottom: 12px; margin-top: 4px;
+display: flex; align-items: center; gap: 6px;
+}
+
+/* PANEL */
+.panel {
+background: var(–white); border-radius: 18px;
+padding: 16px; border: 1.5px solid var(–border);
+margin-bottom: 12px;
+}
+.panel-title {
+font-family: ‘Nunito’, sans-serif; font-size: 14px; font-weight: 900;
+margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center;
+}
+.panel-tag {
+font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 10px;
+background: var(–pink-light); color: var(–pink-dark);
+}
+.panel-tag.green { background: var(–green-light); color: var(–green-dark); }
+.panel-tag.yellow { background: var(–yellow-light); color: #9A7A00; }
+
+/* INCOME */
+.income-row {
+display: flex; justify-content: space-between; align-items: center;
+padding: 10px 12px; border-radius: 12px; background: var(–cream); margin-bottom: 8px;
+}
+.income-label { font-size: 13px; font-weight: 700; }
+.income-amount { font-family: ‘Nunito’, sans-serif; font-size: 15px; font-weight: 900; color: var(–green-dark); }
+.income-total {
+background: var(–green-light); border-radius: 12px; padding: 12px;
+display: flex; justify-content: space-between; align-items: center; margin-top: 6px;
+}
+.income-total .income-amount { font-size: 18px; }
+
+/* CATEGORY BARS */
+.cat-item { margin-bottom: 14px; }
+.cat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+.cat-name { font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 7px; }
+.cat-dot { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; }
+.cat-right { display: flex; gap: 8px; align-items: center; }
+.cat-pct { font-size: 11px; font-weight: 800; color: var(–ink3); }
+.cat-amount { font-family: ‘Nunito’, sans-serif; font-size: 13px; font-weight: 900; }
+.bar-track { height: 7px; background: var(–cream); border-radius: 10px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 10px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
+.cat-total {
+font-family: ‘Nunito’, sans-serif; font-size: 12px; font-weight: 900;
+background: var(–cream); padding: 6px 10px; border-radius: 8px;
+display: inline-block; margin-bottom: 12px; color: var(–ink2);
+}
+
+/* FLAG ITEMS */
+.flag-item {
+display: flex; justify-content: space-between; align-items: center;
+padding: 10px 12px; border-radius: 12px; background: var(–cream); margin-bottom: 8px;
+}
+.flag-date { font-size: 10px; font-weight: 700; color: var(–ink3); }
+.flag-desc { font-size: 13px; font-weight: 700; margin-top: 1px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.flag-amt { font-family: ‘Nunito’, sans-serif; font-size: 14px; font-weight: 900; white-space: nowrap; margin-left: 10px; }
+
+/* TOP EXPENSES */
+.top-item {
+display: flex; justify-content: space-between; align-items: center;
+padding: 10px 12px; border-radius: 12px; background: var(–cream); margin-bottom: 8px;
+}
+.top-desc { font-size: 13px; font-weight: 700; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.top-sub { font-size: 10px; font-weight: 700; color: var(–ink3); margin-top: 1px; }
+.top-amt { font-family: ‘Nunito’, sans-serif; font-size: 14px; font-weight: 900; color: var(–pink-dark); white-space: nowrap; }
+
+/* MONTHLY TABLE - mobile card style */
+.month-card {
+background: var(–white); border-radius: 16px;
+border: 1.5px solid var(–border); padding: 14px 16px;
+margin-bottom: 10px; cursor: pointer;
+transition: transform 0.15s;
+}
+.month-card:active { transform: scale(0.98); }
+.month-card-header {
+display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
+}
+.month-card-name { font-family: ‘Nunito’, sans-serif; font-size: 16px; font-weight: 900; }
+.month-card-netto {
+font-family: ‘Nunito’, sans-serif; font-size: 18px; font-weight: 900;
+padding: 4px 12px; border-radius: 12px;
+}
+.month-card-netto.pos { background: var(–green-light); color: var(–green-dark); }
+.month-card-netto.neg { background: var(–pink-light); color: var(–pink-dark); }
+.month-card-row {
+display: flex; justify-content: space-between;
+font-size: 12px; font-weight: 600; color: var(–ink2); margin-bottom: 4px;
+}
+.month-card-row span:last-child { font-family: ‘Nunito’, sans-serif; font-weight: 800; color: var(–ink); }
+.month-total-card {
+background: var(–ink); border-radius: 16px; padding: 16px;
+margin-bottom: 10px; color: var(–white);
+}
+.month-total-card .month-card-name { color: var(–white); }
+.month-total-card .month-card-row { color: rgba(255,255,255,0.6); }
+.month-total-card .month-card-row span:last-child { color: var(–white); }
+.month-total-netto {
+font-family: ‘Nunito’, sans-serif; font-size: 22px; font-weight: 900;
+}
+
+/* TRANSACTIONS */
+.tx-filters {
+display: flex; gap: 8px; overflow-x: auto;
+padding-bottom: 4px; margin-bottom: 12px;
+-webkit-overflow-scrolling: touch; scrollbar-width: none;
+}
+.tx-filters::-webkit-scrollbar { display: none; }
+.tx-filter {
+flex-shrink: 0; padding: 7px 14px; border-radius: 16px;
+border: 1.5px solid var(–border); background: var(–white);
+font-family: ‘Nunito’, sans-serif; font-size: 12px; font-weight: 700;
+color: var(–ink2); cursor: pointer;
+}
+.tx-filter.active { background: var(–ink); color: var(–white); border-color: var(–ink); }
+.tx-filter.flag-filter.active { background: var(–pink); color: var(–white); border-color: var(–pink); }
+.tx-search {
+width: 100%; padding: 10px 16px; border-radius: 14px;
+border: 1.5px solid var(–border); background: var(–white);
+font-family: ‘Nunito Sans’, sans-serif; font-size: 13px; font-weight: 600;
+color: var(–ink); outline: none; margin-bottom: 12px;
+}
+.tx-search:focus { border-color: var(–pink); }
+
+.tx-card {
+background: var(–white); border-radius: 14px;
+border: 1.5px solid var(–border);
+padding: 12px 14px; margin-bottom: 8px;
+}
+.tx-card.flagged { background: #FEF3F7; border-color: var(–pink); }
+.tx-card-top {
+display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;
+}
+.tx-card-desc {
+font-size: 13px; font-weight: 700; flex: 1;
+overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+padding-right: 10px;
+}
+.tx-card-amt {
+font-family: ‘Nunito’, sans-serif; font-size: 15px; font-weight: 900;
+white-space: nowrap; text-align: right;
+}
+.tx-card-bottom {
+display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+}
+.tx-date-badge {
+font-size: 10px; font-weight: 700; color: var(–ink3);
+}
+.src-badge {
+font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 8px;
+}
+.src-revolut { background: var(–lilac-light); color: #7B5EA7; }
+.src-intesa { background: var(–green-light); color: #3A7B55; }
+.cat-select {
+flex: 1; min-width: 0;
+background: var(–cream); border: 1.5px solid var(–border);
+border-radius: 8px; color: var(–ink);
+font-family: ‘Nunito’, sans-serif; font-size: 11px; font-weight: 700;
+padding: 4px 8px; cursor: pointer; outline: none;
+max-width: 180px;
+}
+.persons-row {
+display: flex; align-items: center; gap: 8px; margin-top: 6px;
+}
+.persons-label { font-size: 11px; font-weight: 700; color: var(–ink3); }
+.persons-input {
+width: 52px; background: var(–cream); border: 1.5px solid var(–border);
+border-radius: 8px; color: var(–ink);
+font-family: ‘Nunito’, sans-serif; font-size: 13px; font-weight: 800;
+text-align: center; padding: 5px 4px; outline: none;
+}
+.persons-input:focus { border-color: var(–lilac); }
+
+/* BOTTOM NAV */
+.bottom-nav {
+position: fixed; bottom: 0; left: 0; right: 0;
+height: var(–nav-h);
+background: var(–white);
+border-top: 1.5px solid var(–border);
+display: flex; align-items: center;
+padding: 0 8px 8px;
+z-index: 100;
+box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+}
+.nav-item {
+flex: 1; display: flex; flex-direction: column;
+align-items: center; justify-content: center;
+gap: 3px; padding: 8px 4px; border-radius: 14px;
+cursor: pointer; transition: all 0.15s;
+border: none; background: none;
+}
+.nav-item.active { background: var(–yellow); }
+.nav-icon { font-size: 22px; line-height: 1; }
+.nav-label {
+font-family: ‘Nunito’, sans-serif; font-size: 10px; font-weight: 800;
+color: var(–ink3); letter-spacing: 0.03em;
+}
+.nav-item.active .nav-label { color: var(–ink); }
+
+/* UTILS */
+.pos { color: var(–green-dark); }
+.neg { color: var(–pink-dark); }
+.empty { text-align: center; padding: 32px; color: var(–ink3); font-size: 13px; font-weight: 600; }
+
+/* TOAST */
+.toast {
+position: fixed; bottom: calc(var(–nav-h) + 12px); left: 50%; transform: translateX(-50%);
+background: var(–ink); color: white;
+font-family: ‘Nunito’, sans-serif; font-size: 13px; font-weight: 800;
+padding: 12px 20px; border-radius: 20px;
+opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999;
+white-space: nowrap;
+}
+.toast.show { opacity: 1; }
+
+/* DESKTOP LAYOUT — wider screens */
+@media (min-width: 600px) {
+.header { padding-top: 20px; }
+.kpi-grid { grid-template-columns: repeat(4,1fr); }
+.kpi-full { grid-column: auto; }
+.grid2-desk { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid2-desk > * { margin-bottom: 0; }
+.grid3-desk { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.grid3-desk > * { margin-bottom: 0; }
+}
+</style>
+
+</head>
+<body>
+
+<div class="app">
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-row">
+      <div class="header-logo">
+        <div class="logo-blob">💸</div>
+        <div class="header-title">
+          <h1>Budget Giulia</h1>
+          <p>Revolut · Intesa · 2026</p>
+        </div>
+      </div>
+      <button id="save-btn" onclick="saveToFile()" style="background:var(--yellow);border:1.5px solid var(--yellow);border-radius:16px;padding:7px 14px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:var(--ink);cursor:pointer">💾 Salva</button>
+    </div>
+    <div class="month-scroller" id="month-scroller">
+      <button class="mbtn active" onclick="setMonth('all')">YTD 2026</button>
+      <button class="mbtn" onclick="setMonth('2026-01')">Gennaio</button>
+      <button class="mbtn" onclick="setMonth('2026-02')">Febbraio</button>
+      <button class="mbtn" onclick="setMonth('2026-03')">Marzo</button>
+      <button class="mbtn" onclick="setMonth('2026-04')">Aprile</button>
+    </div>
+  </div>
+
+  <!-- OVERVIEW -->
+
+  <div class="view active" id="view-overview">
+    <div class="kpi-grid" id="kpi-row"></div>
+
+```
+<div class="grid2-desk">
+  <div class="panel">
+    <div class="panel-title">💰 Entrate <span class="panel-tag green" id="flag-count-badge">0</span></div>
+    <div id="income-breakdown"></div>
+  </div>
+  <div class="panel">
+    <div class="panel-title">🥧 Spese per categoria</div>
+    <div id="macro-breakdown"></div>
+  </div>
+</div>
+
+<div class="grid2-desk">
+  <div class="panel">
+    <div class="panel-title">🏆 Top spese</div>
+    <div id="top-expenses"></div>
+  </div>
+  <div class="panel">
+    <div class="panel-title">⚑ Da rivedere <span class="panel-tag" id="flag-badge2">0 tx</span></div>
+    <div id="flag-preview"></div>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- MONTHLY -->
+
+  <div class="view" id="view-monthly">
+    <div id="monthly-cards"></div>
+  </div>
+
+  <!-- CATEGORIES -->
+
+  <div class="view" id="view-categories">
+    <div class="grid2-desk" style="margin-bottom:12px">
+      <div class="panel"><div class="panel-title">🌿 Necessità</div><div id="cat-necessita"></div></div>
+      <div class="panel"><div class="panel-title">🎉 Entertainment</div><div id="cat-entertainment"></div></div>
+    </div>
+    <div class="grid2-desk" style="margin-bottom:12px">
+      <div class="panel"><div class="panel-title">💅 Spese Personali</div><div id="cat-personali"></div></div>
+      <div class="panel"><div class="panel-title">🚗 Trasporti</div><div id="cat-trasporti"></div></div>
+    </div>
+    <div class="grid3-desk">
+      <div class="panel"><div class="panel-title">📱 Abbonamenti</div><div id="cat-abbonamenti"></div></div>
+      <div class="panel"><div class="panel-title">🎁 Regali</div><div id="cat-regali"></div></div>
+      <div class="panel"><div class="panel-title">🐾 Animali & Altro</div><div id="cat-altro"></div></div>
+    </div>
+  </div>
+
+  <!-- TRANSACTIONS -->
+
+  <div class="view" id="view-transactions">
+    <input class="tx-search" type="text" placeholder="🔎 Cerca transazione..." oninput="filterTx(this.value)">
+    <div class="tx-filters">
+      <button class="tx-filter active" onclick="setTxFilter('all',event)">Tutte</button>
+      <button class="tx-filter" onclick="setTxFilter('expense',event)">💸 Spese</button>
+      <button class="tx-filter" onclick="setTxFilter('income',event)">💰 Entrate</button>
+      <button class="tx-filter flag-filter" onclick="setTxFilter('flag',event)">⚑ Da rivedere</button>
+      <button class="tx-filter" onclick="setTxFilter('shared',event)">👥 Condivise</button>
+    </div>
+    <div id="tx-list"></div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+
+<div class="bottom-nav">
+  <button class="nav-item active" onclick="switchTab('overview')">
+    <span class="nav-icon">✨</span>
+    <span class="nav-label">Overview</span>
+  </button>
+  <button class="nav-item" onclick="switchTab('monthly')">
+    <span class="nav-icon">📅</span>
+    <span class="nav-label">Mensile</span>
+  </button>
+  <button class="nav-item" onclick="switchTab('categories')">
+    <span class="nav-icon">🗂️</span>
+    <span class="nav-label">Categorie</span>
+  </button>
+  <button class="nav-item" onclick="switchTab('transactions')">
+    <span class="nav-icon">🔍</span>
+    <span class="nav-label">Transazioni</span>
+  </button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const RAW_PLACEHOLDER = [{"id": 0, "date": "2026-04-22", "description": "Salsamenteria Di Parma", "amount": -24.5, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 1, "date": "2026-04-22", "description": "Pagamento da HENNER-GMC", "amount": 60.0, "currency": "EUR", "source": "Revolut", "macro": "Entrate", "sub": "Da Rivedere", "flag": true, "income_type": "persone", "persons": 1, "shared_flag": false}, {"id": 2, "date": "2026-04-21", "description": "Canva* I0485837961668", "amount": -12.0, "currency": "EUR", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 3, "date": "2026-04-21", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 436.36, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 4, "date": "2026-04-20", "description": "Farmacia Boots San Bab", "amount": -34.0, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Farmacia", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 5, "date": "2026-04-20", "description": "Panino Giusto Spa Via", "amount": -11.0, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 6, "date": "2026-04-20", "description": "Openai *chatgpt Subscr", "amount": -19.08, "currency": "840", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 7, "date": "2026-04-20", "description": "Pagamento da parte di MEBIUS SOCIETA' A RESPONSABILITA' LIMITATA", "amount": 43.0, "currency": "EUR", "source": "Revolut", "macro": "Entrate", "sub": "Da Rivedere", "flag": true, "income_type": "persone", "persons": 1, "shared_flag": false}, {"id": 8, "date": "2026-04-20", "description": "ATM - Azienda Trasporti Milanesi", "amount": -2.2, "currency": "EUR", "source": "Revolut", "macro": "Trasporti", "sub": "Metro", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 9, "date": "2026-04-19", "description": "JOE & THE JUICE", "amount": -7.1, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 10, "date": "2026-04-19", "description": "Bolt.euo2604191521", "amount": -0.16, "currency": "826", "source": "Intesa", "macro": "Entertainment", "sub": "Attività Vacanza", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 11, "date": "2026-04-19", "description": "Uber *trip", "amount": -26.73, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Taxi", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 12, "date": "2026-04-19", "description": "Bolt.euo2604191521", "amount": -53.39, "currency": "826", "source": "Intesa", "macro": "Entertainment", "sub": "Attività Vacanza", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 13, "date": "2026-04-19", "description": "The Ivy Chelsea Garde", "amount": -63.04, "currency": "826", "source": "Intesa", "macro": "Entertainment", "sub": "Ristoranti Vacanza", "flag": false, "income_type": null, "persons": 1, "shared_flag": true}, {"id": 14, "date": "2026-04-19", "description": "Sushisamba Covent Gard", "amount": -143.38, "currency": "826", "source": "Intesa", "macro": "Entertainment", "sub": "Ristoranti Vacanza", "flag": false, "income_type": null, "persons": 1, "shared_flag": true}, {"id": 15, "date": "2026-04-19", "description": "WH Smith Heathr", "amount": -3.28, "currency": "826", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 16, "date": "2026-04-19", "description": "Zettle_*Love My Human", "amount": -45.27, "currency": "826", "source": "Intesa", "macro": "Animali Domestici", "sub": "Camillo", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 17, "date": "2026-04-18", "description": "Tfl Travel Ch", "amount": -2.94, "currency": "826", "source": "Intesa", "macro": "Entertainment", "sub": "Attività Vacanza", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 18, "date": "2026-04-18", "description": "SumUp *Crepes Ice cre", "amount": -10.02, "currency": "826", "source": "Intesa", "macro": "Entertainment", "sub": "Ristoranti Vacanza", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 19, "date": "2026-04-18", "description": "JOE & THE JUICE", "amount": -15.59, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 20, "date": "2026-04-18", "description": "Simlocal", "amount": -28.85, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Ricarica", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 21, "date": "2026-04-18", "description": "Heathrow express", "amount": -8.08, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Attività Vacanza", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 22, "date": "2026-04-18", "description": "Uber *trip", "amount": -27.87, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Taxi", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 23, "date": "2026-04-18", "description": "Joe The Juice Uk Ltd", "amount": -10.14, "currency": "826", "source": "Intesa", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 24, "date": "2026-04-17", "description": "Addebito diretto disposto a favore di TELECOM ITALIA SPA O TIM S P A MANDATO CMLGLI96E41G478Q01000001", "amount": -5.0, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Bollette", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 25, "date": "2026-04-17", "description": "Commissioni E Spese Adue", "amount": -0.5, "currency": "EUR", "source": "Intesa", "macro": "Abbonamenti", "sub": "Canone Intesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 26, "date": "2026-04-17", "description": "Pagamento a favore di COSTANTINO PALUMBO", "amount": -85.0, "currency": "EUR", "source": "Revolut", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 27, "date": "2026-04-16", "description": "UK Visas and Immigration", "amount": -23.88, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Attività Vacanza", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 29, "date": "2026-04-15", "description": "Lime*ride Zyuc", "amount": -1.32, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Bici", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 30, "date": "2026-04-15", "description": "Pasticceria Marchesi", "amount": -10.4, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 31, "date": "2026-04-15", "description": "B-Food", "amount": -13.08, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 32, "date": "2026-04-14", "description": "Studio Associato Dei D", "amount": -252.0, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Medico", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 33, "date": "2026-04-14", "description": "Sant Ambroeus Milano", "amount": -5.0, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 34, "date": "2026-04-13", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 331.63, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 35, "date": "2026-04-13", "description": "Lime*pass Zyuc", "amount": -29.99, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Bici", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 36, "date": "2026-04-13", "description": "Pagamento da HENNER-GMC", "amount": 172.4, "currency": "EUR", "source": "Revolut", "macro": "Entrate", "sub": "Da Rivedere", "flag": true, "income_type": "persone", "persons": 1, "shared_flag": false}, {"id": 37, "date": "2026-04-12", "description": "Cioccolatitaliani", "amount": -11.5, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 38, "date": "2026-04-12", "description": "Luini", "amount": -3.0, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 39, "date": "2026-04-11", "description": "Bar Paradiso", "amount": -25.0, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 40, "date": "2026-04-11", "description": "Foglia Pharmacy", "amount": -94.7, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Farmacia", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 41, "date": "2026-04-11", "description": "Panino Giusto Spa Via Bor", "amount": -17.5, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 42, "date": "2026-04-10", "description": "Panino Giusto Spa Via Bor", "amount": -12.5, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 43, "date": "2026-04-10", "description": "Istituto Clinico Brera", "amount": -852.0, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Medico", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 44, "date": "2026-04-09", "description": "Addebito diretto disposto a favore di TELECOM ITALIA SPA O TIM S P A MANDATO CMLGLI96E41G478Q01000001", "amount": -6.99, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Bollette", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 45, "date": "2026-04-09", "description": "Oysho", "amount": -55.98, "currency": "EUR", "source": "Revolut", "macro": "Spese Personali", "sub": "Abbigliamento", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 46, "date": "2026-04-09", "description": "Bowls And More", "amount": -15.9, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 47, "date": "2026-04-09", "description": "Commissioni E Spese Adue", "amount": -0.5, "currency": "EUR", "source": "Intesa", "macro": "Abbonamenti", "sub": "Canone Intesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 48, "date": "2026-04-08", "description": "Pagamento da HENNER-GMC", "amount": 117.64, "currency": "EUR", "source": "Revolut", "macro": "Entrate", "sub": "Da Rivedere", "flag": true, "income_type": "persone", "persons": 1, "shared_flag": false}, {"id": 49, "date": "2026-04-08", "description": "Bowls And More", "amount": -19.4, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 50, "date": "2026-04-07", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 506.29, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 51, "date": "2026-04-07", "description": "Barrys Senato", "amount": -35.0, "currency": "EUR", "source": "Revolut", "macro": "Spese Personali", "sub": "Sport", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 52, "date": "2026-04-06", "description": "Il Divino", "amount": -120.0, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 4, "shared_flag": true}, {"id": 53, "date": "2026-04-05", "description": "PEPCO", "amount": -5.0, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Spesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 54, "date": "2026-04-04", "description": "Oysho", "amount": -76.13, "currency": "EUR", "source": "Revolut", "macro": "Spese Personali", "sub": "Abbigliamento", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 55, "date": "2026-04-04", "description": "Sephora", "amount": -20.0, "currency": "EUR", "source": "Revolut", "macro": "Spese Personali", "sub": "Beauty", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 56, "date": "2026-04-04", "description": "Original Pizza Ok", "amount": -40.0, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 57, "date": "2026-04-03", "description": "UNIQLO", "amount": -69.8, "currency": "EUR", "source": "Revolut", "macro": "Spese Personali", "sub": "Abbigliamento", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 58, "date": "2026-04-03", "description": "Sant Ambroeus Milano", "amount": -14.8, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 59, "date": "2026-04-03", "description": "Zara", "amount": -10.14, "currency": "EUR", "source": "Revolut", "macro": "Spese Personali", "sub": "Abbigliamento", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 60, "date": "2026-04-03", "description": "Osteria Di Passignano", "amount": -480.0, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": true}, {"id": 61, "date": "2026-04-02", "description": "Romanengo", "amount": -98.0, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": true}, {"id": 62, "date": "2026-04-02", "description": "Pam Panorama", "amount": -8.0, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Spesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 63, "date": "2026-04-02", "description": "Bar Brera", "amount": -6.6, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 64, "date": "2026-04-01", "description": "Dott scooter bill 12", "amount": -3.0, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Bici", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 65, "date": "2026-04-01", "description": "Take Care Srl", "amount": -49.0, "currency": "EUR", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 66, "date": "2026-04-01", "description": "Dott scooter bill 22", "amount": -1.3, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Bici", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 67, "date": "2026-03-31", "description": "Pasticceria Marchesi", "amount": -17.75, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 68, "date": "2026-03-31", "description": "Imposta Di Bollo E/c E Rendiconto", "amount": -8.4, "currency": "EUR", "source": "Intesa", "macro": "Abbonamenti", "sub": "Canone Intesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 69, "date": "2026-03-31", "description": "Canone Mensile Carta Di Credito", "amount": -7.5, "currency": "EUR", "source": "Intesa", "macro": "Abbonamenti", "sub": "Canone Intesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 70, "date": "2026-03-31", "description": "Imposta Di Bollo Su Prodotti Finanziari", "amount": -7.1, "currency": "EUR", "source": "Intesa", "macro": "Abbonamenti", "sub": "Canone Intesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 71, "date": "2026-03-31", "description": "Canone Mensile", "amount": -10.9, "currency": "EUR", "source": "Intesa", "macro": "Abbonamenti", "sub": "Canone Intesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 72, "date": "2026-03-31", "description": "Spese Emis. E/c.rendicontocomunicazioni", "amount": -0.7, "currency": "EUR", "source": "Intesa", "macro": "Abbonamenti", "sub": "Canone Intesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 73, "date": "2026-03-31", "description": "Pagamento a favore di Neida Botelho Salas", "amount": -250.0, "currency": "EUR", "source": "Revolut", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 74, "date": "2026-03-30", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 347.91, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 75, "date": "2026-03-30", "description": "Lime*ride Zyuc", "amount": -1.98, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Bici", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 76, "date": "2026-03-29", "description": "Tiger Italia 1 Srl", "amount": -21.2, "currency": "EUR", "source": "Intesa", "macro": "Spese Personali", "sub": "Arredamento", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 77, "date": "2026-03-29", "description": "Milano Via Torino", "amount": -25.99, "currency": "EUR", "source": "Intesa", "macro": "Spese Personali", "sub": "Abbigliamento", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 78, "date": "2026-03-29", "description": "Sp Eco Bio Boutique", "amount": -30.1, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Spesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 79, "date": "2026-03-29", "description": "Cc Zara 3307 16", "amount": -60.1, "currency": "EUR", "source": "Intesa", "macro": "Spese Personali", "sub": "Abbigliamento", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 80, "date": "2026-03-28", "description": "Lime*pass Zyuc", "amount": -29.99, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Bici", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 81, "date": "2026-03-27", "description": "Pagopa Applepay Nexi", "amount": -70.5, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Metro", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 82, "date": "2026-03-27", "description": "Pagamento da MOET HENNESSY", "amount": 3481.36, "currency": "EUR", "source": "Revolut", "macro": "Entrate", "sub": "Stipendio", "flag": false, "income_type": "stipendio", "persons": 1, "shared_flag": false}, {"id": 83, "date": "2026-03-26", "description": "Cless Ticket Atm Milan", "amount": -2.2, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Metro", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 84, "date": "2026-03-26", "description": "Cedole O Dividendi", "amount": 28.67, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Altro", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 85, "date": "2026-03-26", "description": "Clinica Laponte Srl", "amount": -300.0, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Medico", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 87, "date": "2026-03-25", "description": "Happy Store Di Zhang X", "amount": -5.99, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Spesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 88, "date": "2026-03-24", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 152.94, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 89, "date": "2026-03-24", "description": "Fabrizio Hair Lab", "amount": -360.0, "currency": "EUR", "source": "Intesa", "macro": "Spese Personali", "sub": "Parrucchiere", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 90, "date": "2026-03-24", "description": "SumUp *Mara Chioccola", "amount": -20.0, "currency": "EUR", "source": "Intesa", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 91, "date": "2026-03-24", "description": "Farmacia Foglia Fasoli", "amount": -50.58, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Farmacia", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 92, "date": "2026-03-23", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 173.28, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 93, "date": "2026-03-22", "description": "Mosh Madrid", "amount": -37.0, "currency": "EUR", "source": "Intesa", "macro": "Entertainment", "sub": "Ristoranti Vacanza", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 94, "date": "2026-03-22", "description": "Metro De Madrid S.a.", "amount": -4.9, "currency": "EUR", "source": "Intesa", "macro": "Entertainment", "sub": "Attività Vacanza", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 95, "date": "2026-03-22", "description": "Sq *jade", "amount": -4.3, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 96, "date": "2026-03-21", "description": "The Madrid Edition", "amount": -18.0, "currency": "EUR", "source": "Intesa", "macro": "Entertainment", "sub": "Hotel", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 97, "date": "2026-03-21", "description": "Canva* I0482733970678", "amount": -12.0, "currency": "EUR", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 98, "date": "2026-03-21", "description": "Istituto Clinico Brera Sr", "amount": -82.0, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Medico", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 99, "date": "2026-03-21", "description": "Primark Gran Via", "amount": -43.15, "currency": "EUR", "source": "Intesa", "macro": "Spese Personali", "sub": "Abbigliamento", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 100, "date": "2026-03-21", "description": "Sq *san Mateo 30", "amount": -6.4, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 101, "date": "2026-03-21", "description": "Metro De Madrid S.a.", "amount": -7.4, "currency": "EUR", "source": "Intesa", "macro": "Entertainment", "sub": "Attività Vacanza", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 102, "date": "2026-03-21", "description": "De Maria Preciados", "amount": -52.0, "currency": "EUR", "source": "Intesa", "macro": "Spese Personali", "sub": "Gioielli/Orologi", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 103, "date": "2026-03-21", "description": "Pasticceria Marchesi", "amount": -10.4, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 104, "date": "2026-03-21", "description": "Cless Ticket Atm Milan", "amount": -2.2, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Metro", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 105, "date": "2026-03-20", "description": "Ravizza 1871", "amount": -17.0, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti Vacanza", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 106, "date": "2026-03-20", "description": "Openai *chatgpt Subscr", "amount": -20.28, "currency": "840", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 107, "date": "2026-03-20", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 105.48, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 108, "date": "2026-03-19", "description": "Serenis Health Srl", "amount": -49.0, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Psicologo", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 109, "date": "2026-03-18", "description": "6527 Caddy S Milano", "amount": -10.96, "currency": "EUR", "source": "Revolut", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 110, "date": "2026-03-16", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 60.0, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 112, "date": "2026-03-14", "description": "B-Food", "amount": -5.48, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 113, "date": "2026-03-14", "description": "Clinica San Martino", "amount": -182.0, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Medico", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 114, "date": "2026-03-11", "description": "ATM - Azienda Trasporti Milanesi", "amount": -2.2, "currency": "EUR", "source": "Revolut", "macro": "Trasporti", "sub": "Metro", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 115, "date": "2026-03-11", "description": "Pasticceria Marchesi", "amount": -10.0, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 116, "date": "2026-03-10", "description": "Addebito diretto disposto a favore di TELECOM ITALIA SPA O TIM S P A MANDATO CMLGLI96E41G478Q01000001", "amount": -6.99, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Bollette", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 117, "date": "2026-03-10", "description": "Sant Ambroeus Milano", "amount": -17.0, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 118, "date": "2026-03-10", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 60.0, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 119, "date": "2026-03-10", "description": "Commissioni E Spese Adue", "amount": -0.5, "currency": "EUR", "source": "Intesa", "macro": "Abbonamenti", "sub": "Canone Intesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 120, "date": "2026-03-10", "description": "Commissioni E Spese Adue", "amount": -0.5, "currency": "EUR", "source": "Intesa", "macro": "Abbonamenti", "sub": "Canone Intesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 121, "date": "2026-03-10", "description": "Addebito diretto disposto a favore di TELECOM ITALIA SPA O TIM S P A MANDATO CMLGLI96E41G478Q01000001", "amount": -5.0, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Bollette", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 122, "date": "2026-03-09", "description": "Trenitalia", "amount": -69.3, "currency": "EUR", "source": "Revolut", "macro": "Trasporti", "sub": "Treno", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 123, "date": "2026-03-09", "description": "ATM - Azienda Trasporti Milanesi", "amount": -2.2, "currency": "EUR", "source": "Revolut", "macro": "Trasporti", "sub": "Metro", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 124, "date": "2026-03-07", "description": "Pasticceria Marchesi", "amount": -9.7, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 125, "date": "2026-03-06", "description": "Pasticceria Marchesi", "amount": -21.0, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 126, "date": "2026-03-06", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 459.57, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 127, "date": "2026-03-04", "description": "Pagamento da UNIPOL ASSICURAZIONI S.P.A.", "amount": 216.0, "currency": "EUR", "source": "Revolut", "macro": "Entrate", "sub": "Altro", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 128, "date": "2026-03-04", "description": "Sweet Coffee Bar", "amount": -7.0, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 129, "date": "2026-03-03", "description": "Pasticceria Marchesi", "amount": -2.7, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 130, "date": "2026-03-02", "description": "Pam Panorama", "amount": -12.72, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Spesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 131, "date": "2026-03-02", "description": "Nexi", "amount": -212.7, "currency": "EUR", "source": "Revolut", "macro": "Abbonamenti", "sub": "Canone Intesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 132, "date": "2026-03-02", "description": "Temu", "amount": -72.62, "currency": "EUR", "source": "Revolut", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 133, "date": "2026-03-02", "description": "L'Oasi dei Fiori", "amount": -10.0, "currency": "EUR", "source": "Revolut", "macro": "Spese Personali", "sub": "Fiori", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 134, "date": "2026-03-02", "description": "Lime*pass Zyuc", "amount": -29.99, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Bici", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 135, "date": "2026-03-02", "description": "Giulius", "amount": -12.88, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 136, "date": "2026-03-02", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 270.55, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 137, "date": "2026-03-01", "description": "Happy Store", "amount": -5.79, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Spesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 138, "date": "2026-03-01", "description": "laESSE", "amount": -3.49, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lavanderia", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 139, "date": "2026-02-28", "description": "Pagamento a favore di MARIIA ZELENKO", "amount": -80.0, "currency": "EUR", "source": "Revolut", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 140, "date": "2026-02-28", "description": "Foglia Pharmacy", "amount": -38.25, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Farmacia", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 141, "date": "2026-02-28", "description": "Pasticceria Marchesi", "amount": -2.7, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 142, "date": "2026-02-28", "description": "Primark", "amount": -4.5, "currency": "EUR", "source": "Revolut", "macro": "Spese Personali", "sub": "Abbigliamento", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 143, "date": "2026-02-28", "description": "Primark", "amount": -10.0, "currency": "EUR", "source": "Revolut", "macro": "Spese Personali", "sub": "Abbigliamento", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 144, "date": "2026-02-28", "description": "Pagamento a favore di Neida Botelho Salas", "amount": -300.0, "currency": "EUR", "source": "Revolut", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 145, "date": "2026-02-27", "description": "Dott scooter bill 22", "amount": -2.13, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Bici", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 146, "date": "2026-02-27", "description": "Bootiful", "amount": -40.0, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Club", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 147, "date": "2026-02-27", "description": "Dott scooter bill 12", "amount": -2.5, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Bici", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 148, "date": "2026-02-26", "description": "Lime*2 Rides Zyuc", "amount": -6.64, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Bici", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 149, "date": "2026-02-26", "description": "Dott scooter bill 12", "amount": -2.5, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Bici", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 150, "date": "2026-02-26", "description": "Dott scooter bill 22", "amount": -2.46, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Bici", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 151, "date": "2026-02-26", "description": "Monti", "amount": -8.0, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 152, "date": "2026-02-25", "description": "Dott scooter bill 22", "amount": -2.46, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Bici", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 153, "date": "2026-02-25", "description": "Pagamento da MOET HENNESSY", "amount": 2561.84, "currency": "EUR", "source": "Revolut", "macro": "Entrate", "sub": "Stipendio", "flag": false, "income_type": "stipendio", "persons": 1, "shared_flag": false}, {"id": 154, "date": "2026-02-25", "description": "Dott bike ride", "amount": -2.5, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Bici", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 155, "date": "2026-02-25", "description": "Dott scooter bill 12", "amount": -2.5, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Bici", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 156, "date": "2026-02-25", "description": "Commissione Disposizione Di Bonifico", "amount": -0.5, "currency": "EUR", "source": "Intesa", "macro": "Abbonamenti", "sub": "Canone Intesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 157, "date": "2026-02-25", "description": "Bonifico disposto a favore di Giganti Srl", "amount": -240.0, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Affitto", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 158, "date": "2026-02-25", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 184.49, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 159, "date": "2026-02-24", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 40.0, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 160, "date": "2026-02-24", "description": "K K Store S.r.l.", "amount": -3.5, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Spesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 161, "date": "2026-02-24", "description": "Istituto Clinico Brera", "amount": -252.0, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Medico", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 162, "date": "2026-02-24", "description": "Gruppo Negozi Srl", "amount": -7.4, "currency": "EUR", "source": "Intesa", "macro": "Spese Personali", "sub": "Abbigliamento", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 163, "date": "2026-02-23", "description": "Primark", "amount": -49.15, "currency": "EUR", "source": "Revolut", "macro": "Spese Personali", "sub": "Abbigliamento", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 164, "date": "2026-02-23", "description": "VeraLab", "amount": -21.0, "currency": "EUR", "source": "Revolut", "macro": "Spese Personali", "sub": "Beauty", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 165, "date": "2026-02-23", "description": "Italo", "amount": -97.9, "currency": "EUR", "source": "Revolut", "macro": "Trasporti", "sub": "Treno", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 166, "date": "2026-02-23", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 342.67, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 167, "date": "2026-02-23", "description": "Bonifico disposto a favore di Santinelli Giambattista", "amount": -200.0, "currency": "EUR", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 168, "date": "2026-02-23", "description": "Commissione Disposizione Di Bonifico", "amount": -0.5, "currency": "EUR", "source": "Intesa", "macro": "Abbonamenti", "sub": "Canone Intesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 169, "date": "2026-02-23", "description": "Pasticceria Marchesi", "amount": -31.5, "currency": "EUR", "source": "Intesa", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 170, "date": "2026-02-23", "description": "Pagamento a favore di GIANLUCA CANTORI LAERA", "amount": -35.0, "currency": "EUR", "source": "Revolut", "macro": "Regali", "sub": "Regali Gianluca", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 171, "date": "2026-02-22", "description": "Chucks", "amount": -83.5, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": true}, {"id": 172, "date": "2026-02-21", "description": "Dott scooter bill 22", "amount": -2.94, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Bici", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 173, "date": "2026-02-21", "description": "Temu", "amount": -12.72, "currency": "EUR", "source": "Revolut", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 174, "date": "2026-02-21", "description": "Demas Srl Roma Parioli", "amount": -29.97, "currency": "EUR", "source": "Intesa", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 175, "date": "2026-02-21", "description": "Canva* I0479932626264", "amount": -12.0, "currency": "EUR", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 176, "date": "2026-02-21", "description": "Dott scooter bill 12", "amount": -2.5, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Bici", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 177, "date": "2026-02-20", "description": "Openai *chatgpt Subscr", "amount": -19.77, "currency": "840", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 178, "date": "2026-02-20", "description": "Pagamento da parte di MEBIUS SOCIETA' A RESPONSABILITA' LIMITATA", "amount": 119.5, "currency": "EUR", "source": "Revolut", "macro": "Entrate", "sub": "Da Rivedere", "flag": true, "income_type": "persone", "persons": 1, "shared_flag": false}, {"id": 179, "date": "2026-02-18", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 415.15, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 180, "date": "2026-02-17", "description": "Cukuc", "amount": -7.0, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 181, "date": "2026-02-16", "description": "Pagamento da HELIUM", "amount": 99.8, "currency": "EUR", "source": "Revolut", "macro": "Entrate", "sub": "Da Rivedere", "flag": true, "income_type": "persone", "persons": 1, "shared_flag": false}, {"id": 182, "date": "2026-02-15", "description": "Hotel Stella", "amount": -2.0, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Hotel", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 184, "date": "2026-02-14", "description": "Lime*ride Zyuc", "amount": -0.58, "currency": "EUR", "source": "Intesa", "macro": "Trasporti", "sub": "Bici", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 185, "date": "2026-02-14", "description": "Supermarket Senoner", "amount": -14.1, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Spesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 186, "date": "2026-02-14", "description": "Baita Sofie", "amount": -113.3, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti Vacanza", "flag": false, "income_type": null, "persons": 1, "shared_flag": true}, {"id": 187, "date": "2026-02-14", "description": "Farmacia Dolomiti", "amount": -28.5, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Farmacia", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 188, "date": "2026-02-13", "description": "Bocconi University", "amount": -2.4, "currency": "EUR", "source": "Revolut", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 189, "date": "2026-02-13", "description": "Rigadritto", "amount": -23.0, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 190, "date": "2026-02-13", "description": "Poke House", "amount": -27.3, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 191, "date": "2026-02-13", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 798.6, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 192, "date": "2026-02-13", "description": "Seilbahnen Seceda Ag", "amount": -18.2, "currency": "EUR", "source": "Intesa", "macro": "Entertainment", "sub": "Attività Vacanza", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 193, "date": "2026-02-11", "description": "Pagamento da 'IMMOBILIARE TERRACHINI SOCIETA' PE", "amount": 66.05, "currency": "EUR", "source": "Revolut", "macro": "Entrate", "sub": "Da Rivedere", "flag": true, "income_type": "persone", "persons": 1, "shared_flag": false}, {"id": 194, "date": "2026-02-10", "description": "Glovo", "amount": -18.4, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 195, "date": "2026-02-10", "description": "Addebito diretto disposto a favore di TELECOM ITALIA SPA O TIM S P A MANDATO CMLGLI96E41G478Q01000001", "amount": -6.99, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Bollette", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 196, "date": "2026-02-09", "description": "Trenitalia", "amount": -44.2, "currency": "EUR", "source": "Revolut", "macro": "Trasporti", "sub": "Treno", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 197, "date": "2026-02-09", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 347.32, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 198, "date": "2026-02-08", "description": "Immagine Digitale Srls", "amount": -34.0, "currency": "EUR", "source": "Revolut", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 199, "date": "2026-02-08", "description": "Costo Bonifico Istantaneo Da Voi Disposto", "amount": -1.0, "currency": "EUR", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 200, "date": "2026-02-08", "description": "Bonifico istantaneo da voi disposto a favore di MoodFajs international limited", "amount": -150.0, "currency": "EUR", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 201, "date": "2026-02-07", "description": "Magazzini Gabrielli SP A.", "amount": -9.94, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Spesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 202, "date": "2026-02-06", "description": "Bonifico istantaneo da voi disposto a favore di GIULIA CAMILLONI", "amount": -1565.05, "currency": "EUR", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 203, "date": "2026-02-06", "description": "Bonifico disposto a favore di Comite social et economique moet hennessy", "amount": -100.0, "currency": "EUR", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 204, "date": "2026-02-06", "description": "Commissione Disposizione Di Bonifico", "amount": -1.0, "currency": "EUR", "source": "Intesa", "macro": "Abbonamenti", "sub": "Canone Intesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 205, "date": "2026-02-06", "description": "Costo Bonifico Istantaneo Da Voi Disposto", "amount": -1.0, "currency": "EUR", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 206, "date": "2026-02-04", "description": "Commissione Disposizione Di Bonifico", "amount": -1.0, "currency": "EUR", "source": "Intesa", "macro": "Abbonamenti", "sub": "Canone Intesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 207, "date": "2026-02-04", "description": "Bonifico disposto a favore di SINTESI S.R.L. AGENZIE ASSICURATIVE RIUNITE", "amount": -117.0, "currency": "EUR", "source": "Intesa", "macro": "Abbonamenti", "sub": "Assicurazioni", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 208, "date": "2026-02-04", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 418.89, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 209, "date": "2026-02-04", "description": "Corlov S.r.l. Semplifi", "amount": -29.0, "currency": "EUR", "source": "Revolut", "macro": "Spese Personali", "sub": "Beauty", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 210, "date": "2026-02-03", "description": "ATM - Azienda Trasporti Milanesi", "amount": -2.2, "currency": "EUR", "source": "Revolut", "macro": "Trasporti", "sub": "Metro", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 211, "date": "2026-02-02", "description": "Prelievo Sportello Banca Del Gruppo", "amount": -900.0, "currency": "EUR", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 212, "date": "2026-02-02", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 166.5, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 213, "date": "2026-02-02", "description": "La Pariolina", "amount": -70.0, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti", "flag": false, "income_type": null, "persons": 1, "shared_flag": true}, {"id": 214, "date": "2026-02-02", "description": "Magazzini Gabrielli SP A.", "amount": -7.78, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Spesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 215, "date": "2026-02-01", "description": "Italo", "amount": -97.9, "currency": "EUR", "source": "Revolut", "macro": "Trasporti", "sub": "Treno", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 216, "date": "2026-01-31", "description": "Canone Mensile Base E Servizi Aggiuntivi", "amount": -15.7, "currency": "EUR", "source": "Intesa", "macro": "Abbonamenti", "sub": "Canone Intesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 217, "date": "2026-01-31", "description": "Trenitalia", "amount": -10.0, "currency": "EUR", "source": "Revolut", "macro": "Trasporti", "sub": "Treno", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 218, "date": "2026-01-29", "description": "Zalando Payments", "amount": 49.98, "currency": "EUR", "source": "Revolut", "macro": "Spese Personali", "sub": "Abbigliamento", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 219, "date": "2026-01-29", "description": "Trenitalia", "amount": -47.45, "currency": "EUR", "source": "Revolut", "macro": "Trasporti", "sub": "Treno", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 220, "date": "2026-01-28", "description": "Bonifico disposto a favore di Giuseppe Fasino", "amount": -216.0, "currency": "EUR", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 221, "date": "2026-01-28", "description": "Pagamento a favore di Neida Botelho Salas", "amount": -100.0, "currency": "EUR", "source": "Revolut", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 222, "date": "2026-01-28", "description": "ATM - Azienda Trasporti Milanesi", "amount": -2.2, "currency": "EUR", "source": "Revolut", "macro": "Trasporti", "sub": "Metro", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 223, "date": "2026-01-28", "description": "Pagamento da MOET HENNESSY", "amount": 2550.47, "currency": "EUR", "source": "Revolut", "macro": "Entrate", "sub": "Stipendio", "flag": false, "income_type": "stipendio", "persons": 1, "shared_flag": false}, {"id": 224, "date": "2026-01-28", "description": "Commissione Disposizione Di Bonifico", "amount": -1.0, "currency": "EUR", "source": "Intesa", "macro": "Abbonamenti", "sub": "Canone Intesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 225, "date": "2026-01-27", "description": "Itinere", "amount": -14.0, "currency": "EUR", "source": "Revolut", "macro": "Trasporti", "sub": "Treno", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 226, "date": "2026-01-26", "description": "Esselunga", "amount": -19.19, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Spesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 227, "date": "2026-01-23", "description": "Bonifico istantaneo da voi disposto a favore di GIULIA CAMILLONI", "amount": -3500.0, "currency": "EUR", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 228, "date": "2026-01-23", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 185.77, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 229, "date": "2026-01-23", "description": "Costo Bonifico Istantaneo Da Voi Disposto", "amount": -1.0, "currency": "EUR", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 230, "date": "2026-01-21", "description": "Pagamento da ETORO (EUROPE) LIMITED", "amount": 206.11, "currency": "EUR", "source": "Revolut", "macro": "Entrate", "sub": "Da Rivedere", "flag": true, "income_type": "persone", "persons": 1, "shared_flag": false}, {"id": 231, "date": "2026-01-21", "description": "Berus Copie", "amount": -1.0, "currency": "EUR", "source": "Revolut", "macro": "Spese Personali", "sub": "Arredamento", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 232, "date": "2026-01-20", "description": "Commissione Disposizione Di Bonifico", "amount": -1.0, "currency": "EUR", "source": "Intesa", "macro": "Abbonamenti", "sub": "Canone Intesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 233, "date": "2026-01-20", "description": "Bonifico disposto a favore di Sara Bucataio", "amount": -30.0, "currency": "EUR", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 234, "date": "2026-01-17", "description": "Gustami", "amount": -4.2, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 235, "date": "2026-01-16", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 564.3, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 237, "date": "2026-01-15", "description": "Milano parking", "amount": -10.0, "currency": "EUR", "source": "Revolut", "macro": "Trasporti", "sub": "Autostrada", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 238, "date": "2026-01-13", "description": "Pam Panorama", "amount": -15.12, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Spesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 239, "date": "2026-01-12", "description": "Addebito diretto disposto a favore di TELECOM ITALIA SPA O TIM S P A MANDATO CMLGLI96E41G478Q01000001", "amount": -6.99, "currency": "EUR", "source": "Intesa", "macro": "Necessità", "sub": "Bollette", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 240, "date": "2026-01-10", "description": "Bar Suisse & Cantina del Suisse", "amount": -48.5, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Lunch", "flag": false, "income_type": null, "persons": 1, "shared_flag": true}, {"id": 241, "date": "2026-01-09", "description": "6527 Caddy S Milano", "amount": -2.79, "currency": "EUR", "source": "Revolut", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 242, "date": "2026-01-09", "description": "Acqua & Sapone", "amount": -3.7, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Spesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 243, "date": "2026-01-09", "description": "Costo Bonifico Istantaneo Da Voi Disposto", "amount": -1.0, "currency": "EUR", "source": "Intesa", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 244, "date": "2026-01-09", "description": "Bonifico istantaneo da voi disposto a favore di Nicolo Braggio", "amount": -1900.0, "currency": "EUR", "source": "Intesa", "macro": "Regali", "sub": "Regali Nicolo", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 245, "date": "2026-01-09", "description": "Effeci Di Cislaghi Fla", "amount": -5.0, "currency": "EUR", "source": "Revolut", "macro": "Spese Personali", "sub": "Parrucchiere", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 246, "date": "2026-01-09", "description": "Happy Store", "amount": -13.69, "currency": "EUR", "source": "Revolut", "macro": "Necessità", "sub": "Spesa", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 247, "date": "2026-01-08", "description": "Pagamento da MULTISEARCH AG", "amount": 10.0, "currency": "EUR", "source": "Revolut", "macro": "Entrate", "sub": "Da Rivedere", "flag": true, "income_type": "persone", "persons": 1, "shared_flag": false}, {"id": 248, "date": "2026-01-07", "description": "McDonald's", "amount": -2.9, "currency": "EUR", "source": "Revolut", "macro": "Altro", "sub": "Altro", "flag": true, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 249, "date": "2026-01-07", "description": "Zalando Payments", "amount": -49.98, "currency": "EUR", "source": "Revolut", "macro": "Spese Personali", "sub": "Abbigliamento", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 250, "date": "2026-01-06", "description": "Pagamento da IPSOS S.R.O.", "amount": 28.0, "currency": "EUR", "source": "Revolut", "macro": "Entrate", "sub": "Da Rivedere", "flag": true, "income_type": "persone", "persons": 1, "shared_flag": false}, {"id": 251, "date": "2026-01-05", "description": "Pagamento da parte di RICCARDO MORO", "amount": 251.87, "currency": "EUR", "source": "Revolut", "macro": "Entrate", "sub": "Da Rivedere", "flag": true, "income_type": "persone", "persons": 1, "shared_flag": false}, {"id": 252, "date": "2026-01-04", "description": "STBMA", "amount": -63.5, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Attività Vacanza", "flag": false, "income_type": null, "persons": 1, "shared_flag": false}, {"id": 253, "date": "2026-01-03", "description": "Société des Téléportés Bettex Mont-d'Arbois", "amount": -127.0, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Attività Vacanza", "flag": false, "income_type": null, "persons": 1, "shared_flag": true}, {"id": 254, "date": "2026-01-03", "description": "La Folie Douce", "amount": -1215.0, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti Vacanza", "flag": false, "income_type": null, "persons": 8, "shared_flag": true}, {"id": 255, "date": "2026-01-03", "description": "Le Refuge", "amount": -451.0, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti Vacanza", "flag": false, "income_type": null, "persons": 1, "shared_flag": true}, {"id": 256, "date": "2026-01-02", "description": "Bonifico disposto da AIRBNB PAYMENTS LUXEMBOURG SA", "amount": 369.17, "currency": "EUR", "source": "Intesa", "macro": "Entrate", "sub": "Airbnb", "flag": false, "income_type": "airbnb", "persons": 1, "shared_flag": false}, {"id": 257, "date": "2026-01-02", "description": "STBMA", "amount": -91.0, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Attività Vacanza", "flag": false, "income_type": null, "persons": 1, "shared_flag": true}, {"id": 258, "date": "2026-01-01", "description": "La Folie Douce", "amount": -15.0, "currency": "EUR", "source": "Revolut", "macro": "Entertainment", "sub": "Ristoranti Vacanza", "flag": false, "income_type": null, "persons": 1, "shared_flag": true}];
+
+let txData = RAW_PLACEHOLDER.map(t=>({...t}));
+let hasUnsaved = false;
+
+function markDirty() {
+  hasUnsaved = true;
+  const btn = document.getElementById('save-btn');
+  if(btn) { btn.style.background='var(--pink)'; btn.textContent='💾 Salva modifiche'; }
+}
+
+function saveToFile() {
+  // Embed current txData state into a new HTML file and download it
+  const currentData = JSON.stringify(txData, null, 0);
+  let newHtml = document.documentElement.outerHTML;
+  // Replace the data array with current state
+  newHtml = newHtml.replace(/const RAW_PLACEHOLDER = \[[\s\S]*?\];/, 'const RAW_PLACEHOLDER = ' + currentData + ';');
+  // Reset save button state in saved file
+  newHtml = newHtml.replace(/💾 Salva modifiche/g, '💾 Salvato');
+  
+  const blob = new Blob([newHtml], {type: 'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  const today = new Date().toISOString().slice(0,10);
+  a.download = 'budget-giulia-' + today + '.html';
+  a.click();
+  
+  hasUnsaved = false;
+  const btn = document.getElementById('save-btn');
+  if(btn) { btn.style.background='var(--green)'; btn.textContent='✓ Salvato!'; 
+    setTimeout(()=>{ btn.style.background='var(--yellow)'; btn.textContent='💾 Salva'; },2000); }
+  showToast('✓ File scaricato con le tue modifiche!');
+}
+let currentMonth = 'all';
+let txFilter = 'all';
+let txSearch = '';
+
+const MACRO_COLORS = {
+  'Necessità':'#A8D5B5','Entertainment':'#F5A8C0','Spese Personali':'#C4B5E8',
+  'Trasporti':'#9CC8E8','Abbonamenti':'#F7E077','Regali':'#F5C4A0',
+  'Altro':'#D4D4E8','Animali Domestici':'#B8D4B0','Entrate':'#A8D5B5'
+};
+const MACRO_EMOJIS = {
+  'Necessità':'🌿','Entertainment':'🎉','Spese Personali':'💅',
+  'Trasporti':'🚗','Abbonamenti':'📱','Regali':'🎁','Altro':'📦','Animali Domestici':'🐾'
+};
+const MONTHS_IT = {'2026-01':'Gennaio','2026-02':'Febbraio','2026-03':'Marzo','2026-04':'Aprile'};
+const fmt = n => '€'+Math.abs(n).toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fmtS = n => (n>=0?'+':'')+'€'+n.toLocaleString('it-IT',{minimumFractionDigits:2,maximumFractionDigits:2});
+const effAmt = t => t.amount/(t.persons||1);
+
+function getFiltered() {
+  return currentMonth==='all' ? txData : txData.filter(t=>t.date.startsWith(currentMonth));
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+tab).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach((b,i)=>{
+    b.classList.toggle('active',['overview','monthly','categories','transactions'][i]===tab);
+  });
+  render();
+}
+
+function setMonth(m) {
+  currentMonth = m;
+  document.querySelectorAll('.mbtn').forEach(b=>{
+    const match = m==='all'?b.textContent.trim()==='YTD 2026':b.textContent.trim()===MONTHS_IT[m];
+    b.classList.toggle('active',match);
+  });
+  render();
+}
+
+function setTxFilter(f,e) {
+  txFilter=f;
+  document.querySelectorAll('.tx-filter').forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active');
+  renderTransactions();
+}
+
+function filterTx(v) { txSearch=v; renderTransactions(); }
+
+function calcStats(txs) {
+  const income = txs.filter(t=>t.macro==='Entrate'&&t.amount>0);
+  const expenses = txs.filter(t=>t.macro!=='Entrate'&&t.amount<0);
+  const stipendio = income.filter(t=>t.sub==='Stipendio').reduce((s,t)=>s+effAmt(t),0);
+  const airbnb = income.filter(t=>t.sub==='Airbnb').reduce((s,t)=>s+effAmt(t),0);
+  const altreEntrate = income.filter(t=>!['Stipendio','Airbnb'].includes(t.sub)).reduce((s,t)=>s+effAmt(t),0);
+  const totIncome = stipendio+airbnb+altreEntrate;
+  const totExpenses = expenses.reduce((s,t)=>s+effAmt(t),0);
+  return {stipendio,airbnb,altreEntrate,totIncome,totExpenses,netto:totIncome+totExpenses};
+}
+
+function render() {
+  renderKPI(); renderIncomeBreakdown(); renderMacroBreakdown();
+  renderTopExpenses(); renderFlagPreview(); renderMonthly();
+  renderCategoryPanels(); renderTransactions();
+}
+
+function renderKPI() {
+  const txs=getFiltered(), s=calcStats(txs);
+  const flags=txs.filter(t=>t.flag).length;
+  document.getElementById('kpi-row').innerHTML=`
+    <div class="kpi" style="background:var(--green-light);border-color:var(--green)">
+      <span class="kpi-emoji">💰</span>
+      <div class="kpi-label">Entrate</div>
+      <div class="kpi-value pos">${fmt(s.totIncome)}</div>
+    </div>
+    <div class="kpi" style="background:var(--pink-light);border-color:var(--pink)">
+      <span class="kpi-emoji">🛍️</span>
+      <div class="kpi-label">Uscite</div>
+      <div class="kpi-value neg">${fmt(s.totExpenses)}</div>
+    </div>
+    <div class="kpi kpi-full" style="background:${s.netto>=0?'var(--green-light)':'var(--pink-light)'};border-color:${s.netto>=0?'var(--green)':'var(--pink)'}">
+      <span class="kpi-emoji">${s.netto>=0?'🥳':'😬'}</span>
+      <div class="kpi-label">Netto periodo</div>
+      <div class="kpi-value ${s.netto>=0?'pos':'neg'}" style="font-size:28px">${fmtS(s.netto)}</div>
+      <div class="kpi-sub">${s.netto>=0?'Mese positivo ✓':'Da riequilibrare'}</div>
+    </div>`;
+  const fb = document.getElementById('flag-badge2');
+  if(fb) fb.textContent=flags+' tx';
+  const fb2 = document.getElementById('flag-count-badge');
+  if(fb2) fb2.textContent='YTD';
+}
+
+function renderIncomeBreakdown() {
+  const s=calcStats(getFiltered());
+  const rows=[
+    {label:'💼 Stipendio LVMH / Moët',amount:s.stipendio},
+    {label:'🏠 Airbnb',amount:s.airbnb},
+    {label:'✨ Altre entrate',amount:s.altreEntrate},
+  ].filter(r=>r.amount>0);
+  document.getElementById('income-breakdown').innerHTML=
+    rows.map(r=>`<div class="income-row">
+      <span class="income-label">${r.label}</span>
+      <span class="income-amount">${fmt(r.amount)}</span>
+    </div>`).join('')+
+    `<div class="income-total">
+      <span class="income-label" style="font-weight:900;font-size:14px">Totale</span>
+      <span class="income-amount" style="font-size:20px">${fmt(s.totIncome)}</span>
+    </div>`;
+}
+
+function renderMacroBreakdown() {
+  const txs=getFiltered().filter(t=>t.macro!=='Entrate'&&t.amount<0);
+  const byMacro={};
+  txs.forEach(t=>{byMacro[t.macro]=(byMacro[t.macro]||0)+Math.abs(effAmt(t));});
+  const total=Object.values(byMacro).reduce((s,v)=>s+v,0);
+  document.getElementById('macro-breakdown').innerHTML=
+    Object.entries(byMacro).sort((a,b)=>b[1]-a[1]).map(([macro,amt])=>{
+      const pct=total>0?(amt/total*100):0;
+      return `<div class="cat-item">
+        <div class="cat-header">
+          <div class="cat-name"><span style="font-size:15px">${MACRO_EMOJIS[macro]||'📦'}</span>${macro}</div>
+          <div class="cat-right">
+            <span class="cat-pct">${pct.toFixed(0)}%</span>
+            <span class="cat-amount">${fmt(amt)}</span>
+          </div>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${MACRO_COLORS[macro]||'#DDD'}"></div></div>
+      </div>`;
+    }).join('');
+}
+
+function renderTopExpenses() {
+  const txs=getFiltered().filter(t=>t.amount<0&&t.macro!=='Entrate').sort((a,b)=>effAmt(a)-effAmt(b)).slice(0,6);
+  document.getElementById('top-expenses').innerHTML=txs.map(t=>`
+    <div class="top-item">
+      <div>
+        <div class="top-desc">${t.description}</div>
+        <div class="top-sub">${t.sub}</div>
+      </div>
+      <div class="top-amt">${fmt(effAmt(t))}${t.persons>1?`<span style="font-size:10px;color:var(--ink3)"> ÷${t.persons}</span>`:''}</div>
+    </div>`).join('');
+}
+
+function renderFlagPreview() {
+  const flags=getFiltered().filter(t=>t.flag);
+  if(!flags.length){document.getElementById('flag-preview').innerHTML='<div class="empty">🎉 Tutto ok!</div>';return;}
+  document.getElementById('flag-preview').innerHTML=flags.slice(0,5).map(t=>`
+    <div class="flag-item">
+      <div style="flex:1;min-width:0">
+        <div class="flag-date">${t.date}</div>
+        <div class="flag-desc">${t.description}</div>
+      </div>
+      <div class="flag-amt" style="color:${t.amount>=0?'var(--green-dark)':'var(--pink-dark)'}">
+        ${t.amount>=0?'+':''}${fmt(t.amount)}
+      </div>
+    </div>`).join('')+
+    (flags.length>5?`<div style="text-align:center;padding:8px;font-size:12px;font-weight:700;color:var(--ink3)">+${flags.length-5} altre</div>`:'');
+}
+
+function renderMonthly() {
+  const months=['2026-01','2026-02','2026-03','2026-04'];
+  let totStip=0,totAir=0,totAlt=0,totIn=0,totExp=0,totNet=0;
+  let html=months.map(m=>{
+    const txs=txData.filter(t=>t.date.startsWith(m));
+    const s=calcStats(txs);
+    totStip+=s.stipendio;totAir+=s.airbnb;totAlt+=s.altreEntrate;
+    totIn+=s.totIncome;totExp+=s.totExpenses;totNet+=s.netto;
+    return `<div class="month-card" onclick="setMonth('${m}');switchTab('overview')">
+      <div class="month-card-header">
+        <span class="month-card-name">${MONTHS_IT[m]}</span>
+        <span class="month-card-netto ${s.netto>=0?'pos':'neg'}">${fmtS(s.netto)}</span>
+      </div>
+      ${s.stipendio>0?`<div class="month-card-row"><span>💼 Stipendio</span><span class="pos">${fmt(s.stipendio)}</span></div>`:''}
+      ${s.airbnb>0?`<div class="month-card-row"><span>🏠 Airbnb</span><span class="pos">${fmt(s.airbnb)}</span></div>`:''}
+      ${s.altreEntrate>0?`<div class="month-card-row"><span>✨ Altre entrate</span><span class="pos">${fmt(s.altreEntrate)}</span></div>`:''}
+      <div class="month-card-row"><span>🛍️ Uscite totali</span><span class="neg">${fmt(s.totExpenses)}</span></div>
+    </div>`;
+  }).join('');
+  html+=`<div class="month-total-card">
+    <div class="month-card-header">
+      <span class="month-card-name">📊 Totale YTD</span>
+    </div>
+    <div class="month-card-row"><span>💰 Entrate totali</span><span>${fmt(totIn)}</span></div>
+    <div class="month-card-row"><span>🛍️ Uscite totali</span><span>${fmt(totExp)}</span></div>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.2);display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:14px;font-weight:800;color:rgba(255,255,255,0.8)">Netto</span>
+      <span class="month-total-netto" style="color:${totNet>=0?'#A8D5B5':'var(--pink)'}">${fmtS(totNet)}</span>
+    </div>
+  </div>`;
+  document.getElementById('monthly-cards').innerHTML=html;
+}
+
+function renderCategoryPanel(elId,macro) {
+  const txs=getFiltered().filter(t=>t.macro===macro&&t.amount<0);
+  const bySub={};
+  txs.forEach(t=>{bySub[t.sub]=(bySub[t.sub]||0)+Math.abs(effAmt(t));});
+  const total=Object.values(bySub).reduce((s,v)=>s+v,0);
+  const color=MACRO_COLORS[macro]||'#DDD';
+  const sorted=Object.entries(bySub).sort((a,b)=>b[1]-a[1]);
+  if(!sorted.length){document.getElementById(elId).innerHTML='<div class="empty">Nessuna spesa 🎉</div>';return;}
+  document.getElementById(elId).innerHTML=
+    `<span class="cat-total">Totale: ${fmt(total)}</span>`+
+    sorted.map(([sub,amt])=>{
+      const pct=total>0?(amt/total*100):0;
+      return `<div class="cat-item">
+        <div class="cat-header">
+          <div class="cat-name"><span class="cat-dot" style="background:${color}"></span>${sub}</div>
+          <div class="cat-right"><span class="cat-pct">${pct.toFixed(0)}%</span><span class="cat-amount">${fmt(amt)}</span></div>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div>
+      </div>`;
+    }).join('');
+}
+
+function renderCategoryPanels() {
+  ['Necessità','Entertainment','Spese Personali','Trasporti','Abbonamenti','Regali'].forEach(m=>{
+    renderCategoryPanel('cat-'+m.toLowerCase().replace(/ /g,'-').replace('è','e').replace('à','a').replace('ì','i'),m);
+  });
+  renderCategoryPanel('cat-necessita','Necessità');
+  renderCategoryPanel('cat-entertainment','Entertainment');
+  renderCategoryPanel('cat-personali','Spese Personali');
+  renderCategoryPanel('cat-trasporti','Trasporti');
+  renderCategoryPanel('cat-abbonamenti','Abbonamenti');
+  renderCategoryPanel('cat-regali','Regali');
+  const txs=getFiltered().filter(t=>['Altro','Animali Domestici'].includes(t.macro)&&t.amount<0);
+  const bySub={};
+  txs.forEach(t=>{bySub[t.sub]=(bySub[t.sub]||0)+Math.abs(effAmt(t));});
+  const total=Object.values(bySub).reduce((s,v)=>s+v,0);
+  document.getElementById('cat-altro').innerHTML=
+    `<span class="cat-total">Totale: ${fmt(total)}</span>`+
+    Object.entries(bySub).sort((a,b)=>b[1]-a[1]).map(([sub,amt])=>{
+      const pct=total>0?(amt/total*100):0;
+      return `<div class="cat-item">
+        <div class="cat-header">
+          <div class="cat-name"><span class="cat-dot" style="background:#D4D4E8"></span>${sub}</div>
+          <div class="cat-right"><span class="cat-amount">${fmt(amt)}</span></div>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:#D4D4E8"></div></div>
+      </div>`;
+    }).join('');
+}
+
+const ALL_CATS=[
+  'Necessità/Affitto','Necessità/Bollette','Necessità/Spesa','Necessità/Airbnb',
+  'Necessità/Benzina','Necessità/Farmacia','Necessità/IMU','Necessità/Lavanderia',
+  'Necessità/Lenti a Contatto','Necessità/Psicologo','Necessità/Lunch',
+  'Necessità/Medico','Necessità/TARI','Necessità/Ricarica',
+  'Entertainment/Ristoranti','Entertainment/Ristoranti Vacanza','Entertainment/Hotel',
+  'Entertainment/Teatro','Entertainment/Club','Entertainment/Attività Vacanza',
+  'Spese Personali/Arredamento','Spese Personali/Sport','Spese Personali/Massaggi',
+  'Spese Personali/Chirurgo','Spese Personali/Fiori','Spese Personali/Parrucchiere',
+  'Spese Personali/Beauty','Spese Personali/Abbigliamento','Spese Personali/Borse',
+  'Spese Personali/Scarpe','Spese Personali/Gioielli/Orologi',
+  'Trasporti/Metro','Trasporti/Volo','Trasporti/Treno','Trasporti/Taxi',
+  'Trasporti/Moto','Trasporti/Bici','Trasporti/Autostrada','Trasporti/Traghetto',
+  'Abbonamenti/Allarme','Abbonamenti/Assicurazioni','Abbonamenti/TIM','Abbonamenti/Canone Intesa',
+  'Regali/Regali Papà','Regali/Regali Mamma','Regali/Regali Nicolo','Regali/Regali Nonna',
+  'Regali/Regali Alexandra','Regali/Regalo Eugenio','Regali/Regali Gianluca',
+  'Regali/Regalo F&C','Regali/Regalo V&E','Regali/Regalo Mathilde',
+  'Regali/Regalo Sara','Regali/Regalo Carlotta',
+  'Animali Domestici/Camillo','Animali Domestici/Ottavio',
+  'Entrate/Stipendio','Entrate/Airbnb','Entrate/Altro','Entrate/Da Rivedere',
+  'Altro/Altro'
+];
+
+function renderTransactions() {
+  let txs=getFiltered();
+  if(txFilter==='expense') txs=txs.filter(t=>t.amount<0&&t.macro!=='Entrate');
+  else if(txFilter==='income') txs=txs.filter(t=>t.amount>0||t.macro==='Entrate');
+  else if(txFilter==='flag') txs=txs.filter(t=>t.flag);
+  else if(txFilter==='shared') txs=txs.filter(t=>t.shared_flag||(t.persons&&t.persons>1));
+  if(txSearch) txs=txs.filter(t=>t.description.toLowerCase().includes(txSearch.toLowerCase()));
+
+  if(!txs.length){document.getElementById('tx-list').innerHTML='<div class="empty">Nessuna transazione 🔍</div>';return;}
+
+  document.getElementById('tx-list').innerHTML=txs.map(t=>{
+    const persons=t.persons||1;
+    const eff=t.amount/persons;
+    const amtColor=t.amount>=0?'var(--green-dark)':'var(--pink-dark)';
+    const catVal=t.macro+'/'+t.sub;
+    const amtDisplay=persons>1
+      ?`<span style="color:var(--ink3);text-decoration:line-through;font-size:11px;display:block">${fmt(t.amount)}</span><span style="color:${amtColor}">${t.amount>=0?'+':''}${fmt(eff)} ÷${persons}</span>`
+      :`<span style="color:${amtColor}">${t.amount>=0?'+':''}${fmt(t.amount)}</span>`;
+    const flags=(t.flag?'⚑ ':'')+(t.shared_flag&&persons===1?'👥 ':'');
+    return `<div class="tx-card${t.flag?' flagged':''}">
+      <div class="tx-card-top">
+        <div class="tx-card-desc">${flags}${t.description}</div>
+        <div class="tx-card-amt">${amtDisplay}</div>
+      </div>
+      <div class="tx-card-bottom">
+        <span class="tx-date-badge">${t.date.slice(5).replace('-','/')}</span>
+        <span class="src-badge ${t.source==='Revolut'?'src-revolut':'src-intesa'}">${t.source}</span>
+        <select class="cat-select" onchange="updateCat(${t.id},this.value)">
+          ${ALL_CATS.map(c=>`<option value="${c}"${c===catVal?' selected':''}>${c}</option>`).join('')}
+        </select>
+      </div>
+      <div class="persons-row">
+        <span class="persons-label">👥 Persone:</span>
+        <input type="number" min="1" max="20" value="${persons}" class="persons-input" oninput="updatePersons(${t.id},this.value)">
+        ${persons>1?`<span style="font-size:11px;font-weight:700;color:var(--green-dark)">→ tua quota: ${fmt(eff)}</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updatePersons(id,val) {
+  const tx=txData.find(t=>t.id===id);
+  if(tx){tx.persons=Math.max(1,parseInt(val)||1);markDirty();showToast('✓ Aggiornato!');render();}
+}
+
+function updateCat(id,val) {
+  const parts=val.split('/');
+  const tx=txData.find(t=>t.id===id);
+  if(tx){
+    tx.macro=parts[0];tx.sub=parts.slice(1).join('/');
+    if(tx.macro!=='Altro'&&tx.macro!=='Entrate') tx.flag=false;
+    markDirty();showToast('✓ Aggiornato!');render();
+  }
+}
+
+function showToast(msg) {
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+render();
+</script>
+
+</body>
+</html>
